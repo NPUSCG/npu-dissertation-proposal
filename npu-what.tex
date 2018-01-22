@@ -1,0 +1,88 @@
+%% File: npu-what.tex
+%% Date: 2018/01/22
+%% Author: Yang Zongze  (yangzongze@gmail.com)
+%% Description: Another way to implement the report.
+\documentclass{article}
+
+\usepackage{xeCJK}
+\usepackage[heading=true]{ctex}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{multirow}
+%\usepackage[showframe]{geometry}
+\usepackage{geometry}
+\usepackage[breakable]{tcolorbox}
+
+\geometry{paperwidth=210mm,paperheight=297mm,%
+  left=2.5cm,right=2.5cm,top=2.54cm,bottom=2.54cm}
+
+\newlength\npuhsep
+\setlength\npuhsep{5mm}
+\newlength\npuvsep
+\setlength\npuvsep{3mm}
+\newlength\npurule
+\setlength\npurule{0.4pt}
+\newlength\npuwidth
+\setlength\npuwidth{\textwidth}
+\addtolength\npuwidth{-2\npurule}
+
+\newtcolorbox{ttcbox}[1][]{%
+    breakable,height fixed for=last,
+    sharp corners=all,boxrule=0.4pt,colframe=black, #1}
+
+\newcommand\paperspace[1]{\par\vskip #1\textheight}
+\newcommand\paperbreak{\par\vskip\textheight minus\textheight \pagebreak}
+
+\def\innerloop{%
+  \ifnum\tmpi<\maxi
+    \def\remain{\loopbody\advance\tmpi by 1 \innerloop}%
+  \else
+    \def\remain{\relax}%
+  \fi 
+  \remain}
+
+\def\forloop#1#2#3{%
+  \newcount\tmpi \newcount\maxi
+  \tmpi=#1 \maxi=#2
+  \def\loopbody{#3}%
+  \innerloop}
+
+\def\definerows#1#2#3#4#5{\def#1{#2}
+  \forloop{1}{\maxno}{\xdef#1{#1 #3} #4}\xdef#1{#1 #5}}
+
+\newcount\maxno \maxno=5
+\def\settestno#1{\maxno=#1 \advance\maxno by 1}
+
+\newcounter{no}
+
+\newcolumntype{C}{>{\hfil}X<{\hfil}}
+
+\pagestyle{plain}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 设置表格中间列数
+\settestno{11}
+
+\begin{document}
+样例
+\begin{ttcbox}
+\hrule height0pt\vskip-\npuvsep
+{%
+  %\renewcommand{\arraystretch}{1.5}
+  \setcounter{no}{1}%
+  \definerows{\firstrow}{编号}{ & \chinese{no}}{\addtocounter{no}{1}}{ & 总计}
+  \definerows{\secondrow}{内容}{&}{}{&}%
+  %
+  \noindent\hskip-\npuhsep
+  \begin{tabularx}{\npuwidth}{C*{\maxno}{|C}}
+    \firstrow  \\\hline
+    \secondrow \\\hline
+  \end{tabularx}%
+}%
+    \paperspace{0.1}
+    \lipsum[2]
+    \paperbreak
+    \lipsum[1]
+    \paperbreak\hrule height0pt \vskip \textheight minus \textheight
+    \lipsum[1]
+\end{ttcbox}
+\end{document}
