@@ -11,24 +11,19 @@
 \usepackage{multirow}
 %\usepackage[showframe]{geometry}
 \usepackage{geometry}
-\usepackage[breakable]{tcolorbox}
+\usepackage[breakable,skins]{tcolorbox}
 
 \geometry{paperwidth=210mm,paperheight=297mm,%
   left=2.5cm,right=2.5cm,top=2.54cm,bottom=2.54cm}
 
-\newlength\npuhsep
-\setlength\npuhsep{5mm}
-\newlength\npuvsep
-\setlength\npuvsep{3mm}
-\newlength\npurule
-\setlength\npurule{0.4pt}
-\newlength\npuwidth
-\setlength\npuwidth{\textwidth}
-\addtolength\npuwidth{-2\npurule}
-
 \newtcolorbox{ttcbox}[1][]{%
-    breakable,height fixed for=last,
-    sharp corners=all,boxrule=0.4pt,colframe=black, #1}
+  breakable,height fixed for=last, 
+  sharp corners=all,boxrule=0.4pt,colframe=black,colback=white, #1}
+
+\newtcolorbox{ttcbtab}[1][]{%
+  left=0mm,right=0mm,top=0mm,bottom=0mm,boxsep=0mm,
+  left skip=-5mm, right skip=-5mm,
+  sharp corners=all,boxrule=0pt,colframe=black,colback=white, #1}
 
 \newcommand\paperspace[1]{\par\vskip #1\textheight}
 \newcommand\paperbreak{\par\vskip\textheight minus\textheight \pagebreak}
@@ -63,26 +58,32 @@
 \settestno{11}
 
 \begin{document}
-样例
-\begin{ttcbox}
-\hrule height0pt\vskip-\npuvsep
-{%
-  %\renewcommand{\arraystretch}{1.5}
-  \setcounter{no}{1}%
-  \definerows{\firstrow}{编号}{ & \chinese{no}}{\addtocounter{no}{1}}{ & 总计}
-  \definerows{\secondrow}{内容}{&}{}{&}%
-  %
-  \noindent\hskip-\npuhsep
-  \begin{tabularx}{\npuwidth}{C*{\maxno}{|C}}
-    \firstrow  \\\hline
-    \secondrow \\\hline
-  \end{tabularx}%
-}%
-    \paperspace{0.1}
-    \lipsum[2]
-    \paperbreak
-    \lipsum[1]
-    \paperbreak\hrule height0pt \vskip \textheight minus \textheight
-    \lipsum[1]
+\centering{\zihao{2} 我只是样板}
+
+\begin{ttcbox}[lower separated=false, space to upper]
+  \begin{ttcbtab}[frame empty, before={\vskip -3mm}]
+    \setcounter{no}{1}%
+    \definerows{\firstrow}{编号}{ & \chinese{no}}{\addtocounter{no}{1}}{ & 总计}%
+    \definerows{\secondrow}{内容}{&}{}{&}%
+    \begin{tabularx}{\textwidth}{C*{\maxno}{|C}}
+      \firstrow  \\\hline
+      \secondrow \\\hline
+    \end{tabularx}% 
+  \end{ttcbtab}
+
+  \lipsum[1]
+  \paperspace{0.1}
+  \lipsum[2]
+  \paperbreak
+  \lipsum[3]
+
+  \tcblower
+  \begin{ttcbtab}[frame empty, enlarge bottom finally by=-4mm]
+    \begin{tabularx}{\textwidth}{c|X}\hline
+      意见 & 签名 \\\hline
+      意见 & 签名 \\
+    \end{tabularx}
+  \end{ttcbtab}
 \end{ttcbox}
+
 \end{document}
