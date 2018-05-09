@@ -30,6 +30,10 @@
 \usepackage{fancybox}
 \usepackage{filecontents}
 
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
 \geometry{paperwidth=210mm,paperheight=297mm,%
   left=2.5cm,right=2.5cm,top=2.54cm,bottom=2.54cm}
 
@@ -39,19 +43,25 @@
   \shadowbox}{}
 
 \ifx\ctexset\undefined
-  \CTEXsetup[format={\heiti\zihao{4}}]{section}
-  \CTEXsetup[format={\heiti\zihao{-4}}]{subsection}
+  \CTEXsetup[format={\zihao{4}\bfseries}]{section}
+  \CTEXsetup[format={\zihao{-4}\bfseries}]{subsection}
 \else
   \ctexset{%
     section={%
-      format={\heiti\zihao{4}},
+      format={\zihao{4}\bfseries},
       beforeskip=5pt,
       afterskip=5pt
     }}
   \ctexset{%
     subsection={%
-      format={\heiti\zihao{-4}},
-      beforeskip=0pt,
+      format={\zihao{-4}\bfseries},
+      beforeskip=5pt,
+      afterskip=0pt
+    }}
+  \ctexset{%
+    subsubsection={%
+      format={\zihao{5}\bfseries},
+      beforeskip=3pt,
       afterskip=0pt
     }}
 \fi
@@ -194,4 +204,12 @@
 \AtEndDocument{\maketail}
 \renewcommand{\normalsize}{\zihao{5}}
 \pagestyle{plain}
-%\linespread{1.5}
+
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{proposition}[theorem]{命题}
+% \theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+
+% \linespread{1.5}
