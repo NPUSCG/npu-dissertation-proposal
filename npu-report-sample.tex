@@ -1,9 +1,14 @@
+%! TeX Program = xelatex
+
 %% File: npu-report-sample.tex (西北工业大学研究生学位论文选题报告表)
 %% Date: 2018/01/20
 %% Author: Yang Zongze  (yangzongze@gmail.com)
-\documentclass{article}
+\documentclass[AutoFakeBold]{article}
 
 \input{npu-report-style.tex}
+% \npunumberingall     % 如果需要 ``参考文献'' 标题参与章节编号, 请取消注释.
+\npucommentstrue     % 带有导师及学院签字页的版本.
+% \npucommentsfalse  % 不带签字页的版本.
 
 %% 示例 bib 文件
 \begin{filecontents}{\jobname.bib}
@@ -38,13 +43,12 @@
 \nputype{-培养类别-}
 \npudate{-日期-}
 %% 设置 `论文类型': 取消或添加注释即可勾选相应类型
-\npucheckbasetrue       %  基础研究
+% \npucheckbasetrue       %  基础研究
 %\npucheckapplytrue     %  应用研究
 %\npucheckenginetrue    %  工程技术
 \npucheckoveralltrue   %  跨学科研究
 
 \begin{document}
-
 \section{研究现状}
 \lipsum[1]
 \subsection{发展历史}
@@ -58,3 +62,4 @@
 \bibliography{\jobname}
 
 \end{document}
+
