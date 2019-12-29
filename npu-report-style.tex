@@ -29,6 +29,7 @@
 \usepackage{geometry}
 \usepackage{fancybox}
 \usepackage{filecontents}
+\usepackage[breakable,skins]{tcolorbox}
 
 \usepackage{amsthm}
 \usepackage{amsmath}
@@ -37,10 +38,20 @@
 \geometry{paperwidth=210mm,paperheight=297mm,%
   left=2.5cm,right=2.5cm,top=2.54cm,bottom=2.54cm}
 
-\fancypage{%
-  \setlength{\fboxsep}{\npusep}%
-  \setlength{\shadowsize}{0pt}%
-  \shadowbox}{}
+\newtcolorbox{ttcbox}[1][]{%
+  breakable,height fixed for=all, 
+  sharp corners=all,boxrule=0.4pt,colframe=black,colback=white, #1}
+
+\newtcolorbox{ttcbtab}[1][]{%
+  left=0mm,right=0mm,top=0mm,bottom=0mm,boxsep=0mm,
+  left skip=-5mm, right skip=-5mm,
+  sharp corners=all,boxrule=0pt,colframe=black,colback=white, #1}
+
+\newcommand\paperspace[1]{\par\vskip #1\textheight}
+\newcommand\paperbreak{\par\vskip\textheight minus\textheight \pagebreak}
+
+\newcolumntype{C}{>{\hfil}X<{\hfil}}
+\pagestyle{plain}
 
 \ifx\ctexset\undefined
   \CTEXsetup[format={\zihao{4}\bfseries}]{section}
@@ -66,30 +77,13 @@
     }}
 \fi
 
-\let\npusection\section
-\def\npustarsection#1{\npusection{#1}}
-\def\section{\secdef\npusection\npustarsection}
+\def\npunumberingall{%
+  \let\npusection\section%
+  \def\npustarsection##1{\npusection{##1}}%
+  \def\section{\secdef\npusection\npustarsection}%
+}
 
-\newlength{\npusep}
-\newlength{\npuwidth}
-\newlength{\npucorrect}
-\newlength{\npucorrecttop}
-\setlength{\npusep}{10pt}
-\setlength{\npuwidth}{\textwidth}
-\addtolength{\npuwidth}{2\npusep}
-\setlength{\npucorrect}{5pt}
-\addtolength{\npucorrect}{-\npusep}
-\setlength{\npucorrecttop}{-10pt}
-\addtolength{\npucorrecttop}{-\npusep}
-\newlength{\npucone}
-\setlength{\npucone}{2cm}
-\newlength{\npuctwo}
-\setlength{\npuctwo}{\npuwidth}
-\addtolength{\npuctwo}{-\npucone}
-\newcommand\npuitem[2][3cm]{\parbox[c][#1][c]{\npucone}{\centering #2}}
-\newcommand\npusig[2][2.5cm]{\parbox[c][#1][c]{\npuctwo}{%
-  \vskip 0pt plus15fil \hskip2cm #2：
-  \hskip 0pt plus15fil 201\quad 年\quad 月\quad 日}}
+\newif\ifnpucomments\npucommentstrue
 
 \newif\ifnpucheckbase\npucheckbasefalse
 \newif\ifnpucheckapply\npucheckapplyfalse
@@ -170,35 +164,57 @@
   \end{list}}
   \clearpage}
 
+\linespread{1.25}
 \def\makehead{
-  \hrule height0pt\vskip\npucorrecttop{%
-  \renewcommand{\arraystretch}{1.5}
-  \newcolumntype{C}{>{\hfil}X<{\hfil}}
-  \noindent\hskip-\npusep
-  \begin{tabularx}{\npuwidth}{>{\centering}X|C|C|C|C}
-    论文题目 & \multicolumn{4}{c}{\npuinnertitle} \\ \hline
-    \multirow{2}*{\parbox{0.18\npuwidth}{%
-        \centering 论文类型\\(请在有关项目下作$\surd$记号)}} %
-    & 基础研究 & 应用研究 & 工程技术 & 跨学科研究 \\ \cline{2-5}
-    & \ifnpucheckbase $\surd$ \fi   & \ifnpucheckapply $\surd$ \fi  
-    & \ifnpucheckengine $\surd$ \fi & \ifnpucheckoverall $\surd$\fi \\\hline
-  \end{tabularx}}\vskip\npusep
-  \noindent{\kaishu
-    研究生在进行选题报告、听取意见后，整理成文（不少于3500字）。}
-  \par}
+  \begin{ttcbox}[lower separated=false, space to upper]
+    \begin{ttcbtab}[frame empty, before={\vskip -3mm}]
+      \renewcommand\arraystretch{1.5}
+      \begin{tabularx}{\textwidth}{>{\centering}X|C|C|C|C}
+        论文题目 & \multicolumn{4}{c}{\npuinnertitle} \\ \hline
+        \multirow{2}*{\parbox{0.18\textwidth}{%
+         \centering 论文类型\\(请在有关项\\目下作$\surd$记号)}} %
+        & 基础研究 & 应用研究 & 工程技术 & 跨学科研究 \\ \cline{2-5}
+        & \ifnpucheckbase $\surd$ \fi   & \ifnpucheckapply $\surd$ \fi  
+        & \ifnpucheckengine $\surd$ \fi & \ifnpucheckoverall $\surd$\fi \\\hline
+      \end{tabularx}
+    \end{ttcbtab}
+
+    \noindent{\kaishu
+      研究生在进行选题报告、听取意见后，整理成文（不少于3500字）。}
+    \par%
+}
+
+\newlength{\npucone}
+\setlength{\npucone}{2.2cm}
+\newlength{\npuctwo}
+\setlength{\npuctwo}{\textwidth}
+\addtolength{\npuctwo}{-\npucone}
+\newcommand\npuitem[2][3cm]{\parbox[c][#1][c]{\npucone}{\centering #2}}
+\newcommand\npusig[3][2.5cm]{\parbox[c][#1][c]{\npuctwo}{%
+  #3 \vskip 0pt plus15fil \hskip2cm #2
+  \hskip 0pt plus15fil \quad 年 \quad 月 \quad 日 {\color{white}哈}}}
 
 \def\maketail{
-  \filbreak
-  \hrule height0pt \vfill
-  {\noindent\hskip-\npusep\tabcolsep=0pt%
-  \renewcommand{\arraystretch}{1.5}\zihao{-4}%
-  \begin{tabularx}{\npuwidth}{c|X}\hline
-  \npuitem[4.5cm]{指导教师\\意\qquad 见} & \npusig[4.5cm]{指导教师（签名）}  \\\hline
-  \npuitem[3.5cm]{院\quad 系\\意\quad 见}& \npusig[3.5cm]{院系负责人（签名）}\\\hline
-  \npuitem[]{研究生院\\复核时间}       & \npusig{复核人签名（签章）}\\\hline
-  \npuitem[2.5cm]{备注}                  &  \\
-  \end{tabularx}}
-  \vskip\npucorrect}
+  \ifnpucomments
+    \tcblower
+    \begin{ttcbtab}[frame empty, enlarge bottom finally by=-4mm]
+      \setlength{\tabcolsep}{0pt}
+      \begin{tabularx}{\textwidth}{c|X}\hline
+        \npuitem[4.5cm]{指导教师\\意\qquad 见} & 
+        \npusig[4.5cm]{\hskip0.38\npuctwo 指导教师（签名）:
+                       \vskip 0pt \hskip2cm 
+                      {\color{white} 院系负责人（签名）:}}%
+                      {{\bf\songti\ 请导师明确说明论文选题是否涉密:}} \\\hline
+        \npuitem[3.5cm]{院\quad 系\\意\quad 见} & 
+        \npusig[3.5cm]{院系负责人（签名）:}{}               \\\hline
+        \npuitem[]{研究生院\\复核时间}          & 
+        \npusig{复核人签名（签章）:}{}                      \\\hline
+        \npuitem[2.5cm]{备注}                   &           \\
+      \end{tabularx}
+    \end{ttcbtab}
+  \fi
+  \end{ttcbox}
+}
 
 \AtBeginDocument{\maketitlepage\makeinnerpage\makehead}
 \AtEndDocument{\maketail}
@@ -213,3 +229,5 @@
 \newtheorem{definition}[theorem]{定义}
 
 % \linespread{1.5}
+\endinput
+
