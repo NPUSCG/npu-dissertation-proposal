@@ -49,17 +49,60 @@
 \npucheckoveralltrue   %  跨学科研究
 
 \begin{document}
-\section{研究现状}
-\lipsum[1]
-\subsection{发展历史}
-\lipsum[2]
-\section{研究内容}
-\lipsum[1-4]
-\section{进度安排}
-\lipsum[2]
+\setlength\parindent{2em}
+{\songti\noindent 一、学位论文研究依据}
+
+{\kaishu\noindent 学位论文的选题依据和研究意义，国内外研究现状和发展态势，主要参考文献，以及已有的工作积累和研究成果。}
+
+{\color{red}\songti\zihao{5}\noindent（图、文、参考文献格式参照《西北工业大学博士研究生学位论文编写规则》）}
+
+\zhlipsum[1-10][name=zhufu]
+
+% Reference
 \nocite{*}
 \bibliographystyle{abbrv}
 \bibliography{\jobname}
+
+\fakebreak
+{\songti\noindent 二、学位论文研究内容}
+
+{\kaishu\noindent 学位论文的研究目标、研究内容及拟解决的关键性问题（可续页）}
+
+\zhlipsum[11-12][name=zhufu]
+
+\fakebreak
+{\songti\noindent 三、学位论文研究计划及预期目标}
+
+{\kaishu\noindent 1.拟采取的主要理论、研究方法、技术路线和实施方案（可续页）}
+
+\zhlipsum[13-14][name=zhufu]
+
+\tcbline*
+{\kaishu\noindent 2.研究计划可行性，研究条件落实情况，可能存在的问题及解决办法（可续页）}
+
+\zhlipsum[16-18][name=zhufu]
+
+\fakebreak
+\setlength\parindent{0em}
+{\kaishu 3. 研究计划及预期成果}
+\begin{ttcbtab}[frame empty, before={\vskip 5pt}]
+  \songti\zihao{5}
+  \renewcommand\arraystretch{1.5}
+  \begin{tabularx}{\textwidth}{c|c|X}
+    \hline
+    \multirow{6}{*}{\npubox[1cm]{研\\究\\计\\划}} 
+    &\hspace*{0.25cm} 起止年月 \hspace*{0.25cm} & \hfil 完成内容 \hfil\\ \cline{2-3}
+    & 2022.01---2022.05 & \\ \cline{2-3}
+    & 2022.01---2022.05 & \\ \cline{2-3}
+    & 2022.01---2022.05 & \\ \cline{2-3}
+    & 2022.01---2022.05 & \\ \cline{2-3}
+    & & \\ \hline
+  \end{tabularx}
+\end{ttcbtab}
+\setlength\parindent{2em}
+{\kaishu\noindent 预期创新点及成果形式\par}
+
+\zhlipsum[19-20][name=zhufu]
 
 \end{document}
 
